@@ -9,7 +9,7 @@ int main(void)
 {
 	pid_t child_pid;
 	ssize_t chars_read;
-	/**extern char **PATH;*/
+	/**extern char **environ;*/
 	size_t length;
 	int i;
 	char *buffer, *token, *buffer_2;
@@ -23,12 +23,12 @@ int main(void)
 		chars_read = getline(&buffer, &length, stdin);
 		if (chars_read == -1)
 		{
+			printf("\n");
 			return (-1);
 		}
 		buffer_2 = malloc(chars_read * sizeof(char));
 		strcpy(buffer_2, buffer);
-		printf("%s\n%s\n", buffer, buffer_2);
-	        token = strtok(buffer, " ");
+	        token = strtok(buffer, " \n");
 	        while (token != NULL)
 	        {
 			strings++;
@@ -36,16 +36,14 @@ int main(void)
 		}
 		strings++;
 		argv = malloc(strings * sizeof(char*));
-		token = strtok(buffer_2, " ");
+		token = strtok(buffer_2, " \n");
 		for (i = 0; token != NULL; i++)
 		{
 			argv[i] = malloc(strlen(token) * sizeof(char));
 			strcpy(argv[i], token);
-			printf("%s\n", token);
 			token = strtok(NULL, " ");
 		}
 		argv[i] = NULL;
-		printf("%s\n", argv[0]);
 		child_pid = fork();
 		if (child_pid == -1)
 		{
@@ -53,7 +51,6 @@ int main(void)
 		}
 		else if (child_pid == 0)
 		{
-			printf("excecution\n");
 			if (execve(argv[0],argv, NULL) == -1)
 			{
 				perror("Error");
@@ -61,7 +58,6 @@ int main(void)
 		}
 		else
 			wait(NULL);
-		printf("again\n");
 	}
 	free(argv);
 	free(buffer);
