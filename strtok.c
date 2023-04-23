@@ -1,14 +1,25 @@
 #include <string.h>
-int main(char *str)
+#include <stdio.h>
+#include <stdlib.h>
+/**
+ * main - parse a string
+ * Return: 0 on success
+ */
+int main(void)
 {
-	char *delimiter = " ";
-	char *dest  = str;
 	char *token;
+	char *buffer;
+	size_t length;
 
-	token = strtok(str, delimiter);
+	printf("$");
+	getline(&buffer, &length, stdin);
+	token = strtok(buffer, " ");
 	while (token != NULL)
 	{
-		token = strtok(NULL, delimiter);
+		printf("%s, ", token);
+		token = strtok(NULL, " \n");
 	}
+	printf("\n");
+	free(buffer);
 	return (0);
 }
