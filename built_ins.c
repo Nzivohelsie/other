@@ -5,7 +5,7 @@ int _builtin(char **arguments, char *line, int ac, char **av, char **env)
 	{
 		free(line);
 		_free(arguments);
-		exit();
+		exit(0);
 	}
 	else if (_strcmp(arguments[0], "env") == 0)
 		_environ(ac, av, env);
